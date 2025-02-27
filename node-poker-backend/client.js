@@ -22,7 +22,7 @@ socket.on("connect", () => {
     console.log("✅ Connected to the server!");
 
     console.log("Registering...");
-    socket.emit("register", {"tableId": getRandomNum(), "playerName": getRandomName()})
+    socket.emit("register", {"tableId": 1, "playerName": getRandomName()})
 });
 
 socket.onAny((event, ...args) => {

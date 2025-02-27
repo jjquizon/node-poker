@@ -85,6 +85,14 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on("player_action", ({ gameId, playerId, action, amount }) => {
+        let game = activeGames[gameId];
+        if (!game) return socket.emit("error", "Game not found");
+
+        let result = game.playerAction(playerId, action, amount);
+        io.to(gameId).emit("game_update", game);
+    });
+
     // Save Hand History
     socket.on("end_game", async ({ tableId, winner }) => {
         if (gameTable[tableId]) {
