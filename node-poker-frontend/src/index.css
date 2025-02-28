@@ -11,3 +11,50 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.poker-table {
+  text-align: center;
+  padding: 20px;
+}
+
+.players {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.player {
+  border: 2px solid gray;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: lightgray;
+}
+
+.player.active {
+  border-color: green;
+  font-weight: bold;
+}
+
+.community-cards {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.pot {
+  margin-top: 20px;
+  font-size: 20px;
+}

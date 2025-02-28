@@ -1,4 +1,4 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:4000"); // Adjust based on backend
+const socket = io("ws://localhost:3001", { transports: ["websocket"] });
 export default socket;
