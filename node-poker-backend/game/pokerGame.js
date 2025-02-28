@@ -10,6 +10,9 @@ class PokerGame {
         this.dealerPositionIndex = 0;
         this.currentTurn = 0;
         this.gameStarted = false;
+        this.turnIndex: 0,
+        this.smallBlind: 10,
+        this.bigBlind: 20
     }
 
     createDeck() {

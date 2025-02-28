@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./db');
 const User = require('./models/User');
 const Game = require('./models/Game');
-
+const pokerGame = require('./pokerGame');
 const http = require('http');
 const { Server } = require('socket.io');
 const app = express();
@@ -26,18 +26,11 @@ const io = new Server(server, {
 
 // Store in Active memory; TODO: Store in DB
 const gameTables = {};
+const activeGames = {};
 
 const PORT = process.env.PORT || 3001;
 
 let players = {};
-let gameState ={
-    players: [],
-    pot: 0,
-    currentBet: 0,
-    dealer: 0,
-    currentTurn: 0,
-    gameStarted: false
-}
 
 app.get('/', (req, res) => {
     res.send('Poker Game Backend is Running');
@@ -61,7 +54,7 @@ io.on('connection', (socket) => {
 
     // Join Table
     socket.on('join_table', (username) => {
-        if (gameState.players.length < 6) {
+        if (gameState.players.length < 8) {
             players[socket.id] = username;
             gameState.players.push({ id: socket.id, username: username, chips: 1000, folded: false });
             console.log(`${username} joined the table`);
@@ -115,5 +108,18 @@ io.on('connection', (socket) => {
         console.log(`User disconnected: ${socket.id}`);
     });
 });
+
+function checkToStartGame() {
+    for (const tableId in gameTables) {
+        if (gameTables[tableId].players.length >= 2 && activeGames[tableId] === undefined) {
+            io.to(tableId).emit('game_ready', 'Game is ready to start');
+            game = new pokerGame(tableId, gameTables[tableId].players);
+            activeGames[tableId] = true;
+        }
+    }
+    
+}
+
+setInterval(checkToStartGame, 20000);
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
